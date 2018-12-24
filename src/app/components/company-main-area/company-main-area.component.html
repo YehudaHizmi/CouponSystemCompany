@@ -1,0 +1,169 @@
+<div class="container">
+    <div *ngIf="hasData!==true">
+        <div class="alert alert-info" style="text-align: center">
+            <strong>There aren't any coupons in the system</strong>
+          </div>
+    </div>
+  <p-fieldset [legend]="caption">
+   <p-table  [columns]="cols" [value]="coupons" selectionMode="single" [paginator]="true" [(selection)]="selectedCoupon" (onRowSelect)="onRowSelect($event)"
+   [rows]="10" [resizableColumns]="true">
+    <ng-template pTemplate="caption">
+        {{ numOfCoupons }} Listed Coupons
+      </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th *ngFor="let col of cols" [pSortableColumn]="col.field" pResizableColumn>
+            {{ col.displayName }}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns">
+                <span *ngIf="col.field!=='startDate' && col.field!=='endDate'" >{{rowData[col.field]}}</span>
+                <span *ngIf="col.field==='startDate' || col.field==='endDate'" >{{rowData[col.field]|date:'dd/MM/yyyy'}}</span>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary" let-rowData>
+        <div style="text-align:left">
+            <button pButton class="ui-button-rounded" type="button"  icon="pi pi-plus" (click)="showDialogToAdd()" label="Add"></button>
+        </div>
+    </ng-template>
+  </p-table>
+  <span>*For update/delete a record please select a row</span>
+  </p-fieldset>
+  </div>
+
+ <p-dialog header="Coupon Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="500"
+  [dismissableMask]="true">
+   <br>
+   <form [formGroup]="createCouponDialogForm">
+      <div class="form-group" style="text-align:center" *ngIf="!newCoupon">
+          <img id="img" [src]="coupon.image" width="90" height="90">
+          <hr style="border-top-width: 3px">
+    </div>
+    <div class="form-group" [class.has-error]="createCouponDialogForm.controls['title'].invalid && createCouponDialogForm.controls['title'].touched"
+    [class.has-success]="createCouponDialogForm.controls[cols[1].field].valid && createCouponDialogForm.controls['title'].touched">
+    <span class="ui-float-label">
+      <input id="title" type="text" formControlName="title" class="form-control" name="title" [(ngModel)]="coupon.title"
+       pInputText>
+      <label for="title" class="control-label">Title</label>
+    </span>
+    <span class="help-block" *ngIf="createCouponDialogForm.controls['title'].invalid && createCouponDialogForm.controls['title'].touched">
+      Title Is Required</span>
+  </div><br>
+
+  <div class="form-group" [class.has-error]="createCouponDialogForm.controls['startDate'].invalid && createCouponDialogForm.controls['startDate'].touched"
+    [class.has-success]="createCouponDialogForm.controls['startDate'].valid && createCouponDialogForm.controls['startDate'].touched">
+    <span class="ui-float-label">
+      <p-calendar id="startDate" formControlName="startDate" inputStyleClass="form-control" name="startDate"  [(ngModel)]="coupon.startDate"
+      [style]="{'width':'470px'}"
+      ></p-calendar>
+      <label for="startDate">Start Date</label>
+    </span>
+    <span class="help-block" *ngIf="createCouponDialogForm.controls['startDate'].invalid && createCouponDialogForm.controls['startDate'].touched">
+      <span class="help-block" *ngIf="createCouponDialogForm.get('startDate').errors['DateMustBeGreaterThanSysdate']">
+          Satrt Date Must Be Equal/Greater than Today
+      </span>
+      <span class="help-block" *ngIf="createCouponDialogForm.get('startDate').errors['StartDateMustBeLessThanEndDate']">
+          Satrt Date Must Be Equal/Less than End Date
+      </span>
+      <span class="help-block" *ngIf="createCouponDialogForm.get('startDate').errors['required']">
+          Start Date Is Required
+      </span>
+  </span>
+    <!-- <span class="help-block" *ngIf="createCouponDialogForm.controls['startDate'].invalid && createCouponDialogForm.controls['startDate'].touched">
+      Start Date Is Required</span> -->
+  </div><br>
+
+  <div class="form-group" [class.has-error]="createCouponDialogForm.controls['endDate'].invalid && createCouponDialogForm.controls['endDate'].touched"
+    [class.has-success]="createCouponDialogForm.controls['endDate'].valid && createCouponDialogForm.controls['endDate'].touched">
+    <span class="ui-float-label">
+      <p-calendar  id="endDate" formControlName="endDate" inputStyleClass="form-control" name="endDate" [(ngModel)]="coupon.endDate"
+      [style]="{'width':'470px'}"
+      ></p-calendar>
+      <label for="endDate">End Date</label>
+    </span>
+    <span class="help-block" *ngIf="createCouponDialogForm.controls['endDate'].invalid && createCouponDialogForm.controls['endDate'].touched">
+      <span class="help-block" *ngIf="createCouponDialogForm.get('endDate').errors['DateMustBeGreaterThanSysdate']">
+          End Date Must Be Equal/Greater than Today
+      </span>
+      <span class="help-block" *ngIf="createCouponDialogForm.get('endDate').errors['EndDateMustBeGreaterThanStartDate']">
+          End Date Must Be Equal/Greater than Start Date
+      </span>
+      <span class="help-block" *ngIf="createCouponDialogForm.get('endDate').errors['required']">
+              End Date Is Required
+      </span>
+  </span>
+    <!-- <span class="help-block" *ngIf="createCouponDialogForm.controls['endDate'].invalid && createCouponDialogForm.controls['endDate'].touched">
+      End Date Is Required</span> -->
+  </div><br>
+
+  <div class="form-group" [class.has-error]="createCouponDialogForm.controls['amount'].invalid && createCouponDialogForm.controls['amount'].touched"
+    [class.has-success]="createCouponDialogForm.controls['amount'].valid && createCouponDialogForm.controls['amount'].touched">
+    <span class="ui-float-label">
+      <input  id="amount" type="number" formControlName="amount" class="form-control" name="amount" [(ngModel)]="coupon.amount"
+       pInputText>
+      <label for="amount" class="control-label" >Amount</label>
+    </span>
+    <span class="help-block" *ngIf="createCouponDialogForm.controls['amount'].invalid && createCouponDialogForm.controls['amount'].touched">
+      Amount Is Required</span>
+  </div><br>
+
+  <div class="form-group" [class.has-error]="createCouponDialogForm.controls['type'].invalid && createCouponDialogForm.controls['type'].touched"
+    [class.has-success]="createCouponDialogForm.controls['type'].valid && createCouponDialogForm.controls['type'].touched">
+    <span class="ui-float-label">
+      <p-dropdown id="type" [options]="types" name="type" inputStyleClass="form-control" [autoDisplayFirst]="false"
+        [showClear]="true" formControlName="type" [(ngModel)]="coupon.type" [style]="{'width':'470px'}">
+      </p-dropdown>
+      <label for="type" class="control-label">Type</label>
+    </span>
+    <span class="help-block" *ngIf="createCouponDialogForm.controls['type'].invalid && createCouponDialogForm.controls['type'].touched">
+      Type Is Required</span>
+  </div><br>
+
+  <div class="form-group" [class.has-error]="createCouponDialogForm.controls['message'].invalid && createCouponDialogForm.controls['message'].touched"
+    [class.has-success]="createCouponDialogForm.controls['message'].valid && createCouponDialogForm.controls['message'].touched">
+    <span class="ui-float-label">
+      <input id="message" type="text" formControlName="message" class="form-control" name="message" [(ngModel)]="coupon.message"
+       pInputText>
+      <label for="message" class="control-label">Message</label>
+    </span>
+    <span class="help-block" *ngIf="createCouponDialogForm.controls['message'].invalid && createCouponDialogForm.controls['message'].touched">
+      Message Is Required</span>
+  </div><br>
+
+  <div class="form-group" [class.has-error]="createCouponDialogForm.controls['price'].invalid && createCouponDialogForm.controls['price'].touched"
+    [class.has-success]="createCouponDialogForm.controls['price'].valid && createCouponDialogForm.controls['price'].touched">
+    <span class="ui-float-label">
+      <input id="price" type="price" formControlName="price" class="form-control" name="price" [(ngModel)]="coupon.price"
+       pInputText>
+      <label for="price" class="control-label">Price</label>
+    </span>
+    <span class="help-block" *ngIf="createCouponDialogForm.controls['price'].invalid && createCouponDialogForm.controls['price'].touched">Price
+      Is Required</span>
+  </div><br>
+
+  <div class="form-group" [class.has-error]="createCouponDialogForm.controls['image'].invalid && createCouponDialogForm.controls['image'].touched"
+    [class.has-success]="createCouponDialogForm.controls['image'].valid && createCouponDialogForm.controls['image'].touched">
+    <span class="ui-float-label">
+      <input id="image" type="text" formControlName="image" class="form-control" name="image" [(ngModel)]="coupon.image"
+       pInputText>
+      <label for="image" class="control-label">Image</label>
+    </span>
+    <span class="help-block" *ngIf="createCouponDialogForm.controls['image'].invalid && createCouponDialogForm.controls['image'].touched">
+      Image Is Required</span>
+  </div><br>
+  <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix ui-button-icon-left">
+          <button  type="button" pButton class="ui-button-rounded ui-button-danger" icon="pi pi-times" (click)="delete()" [label]="DialogLeftButton"></button>
+          &nbsp;
+          <button type="button" [disabled]="!createCouponDialogForm.valid" pButton  class="ui-button-rounded ui-button-success" icon="pi pi-save" (click)="save()" [label]="DialogRightButton"></button>
+      </div>
+  </p-footer>
+</form>
+
+  </p-dialog>
+

@@ -1,0 +1,65 @@
+<div class="container">
+    <p-fieldset [legend]="caption">
+      <!-- <form [formGroup]="showCompanyForm"> -->
+      <form>
+          <div class="form-group" *ngIf="requestedCoupon.image && requestedCoupon.id" style="text-align:center">
+              <!-- <span class="ui-float-label">
+                  <input id="image" type="image" class="form-control" name="image" [(ngModel)]="requestedCoupon.image" disabled="true" pInputText>
+                  <label for="image">Image</label>
+              </span> -->
+              <img id="img" [src]="requestedCoupon.image" width="120" height="90">
+          </div>
+       <div class="form-group">
+            <span class="ui-float-label">
+                <input id=""  type="number" class="form-control" name="id" [(ngModel)]="requestedCoupon.id" pInputText>
+                <label for="id">Company Id</label>
+            </span>
+        </div><br>
+        <div class="form-group">
+            <span class="ui-float-label">
+                <input id="title" type="text" class="form-control" name="title" [ngModel]="requestedCoupon.title" disabled="true"  pInputText>
+                <label for="title">Title</label>
+            </span>
+        </div><br>
+        <div class="form-group">
+            <span class="ui-float-label">
+                <input id="startDate"  type="text" class="form-control" name="startDate" [ngModel]="requestedCoupon.startDate|date:'dd/MM/yyyy'" disabled="true" pInputText>
+                <label for="startDate">Start Date</label>
+            </span>
+        </div><br>
+        <div class="form-group">
+            <span class="ui-float-label">
+                <input id="endDate"  type="text" class="form-control" name="endDate" [ngModel]="requestedCoupon.endDate|date:'dd/MM/yyyy'" disabled="true" pInputText>
+                <label for="endDate">End Date</label>
+            </span>
+        </div><br>
+        <div class="form-group">
+          <span class="ui-float-label">
+              <input id="amount" type="number" class="form-control" name="amount" [ngModel]="requestedCoupon.amount" disabled="true" pInputText>
+              <label for="amount">Amount</label>
+          </span>
+        </div><br>
+        <div class="form-group">
+            <span class="ui-float-label">
+                <input id="type" type="text" class="form-control" name="type" [ngModel]="requestedCoupon.type" disabled="true" pInputText>
+                <label for="type">Type</label>
+            </span>
+          </div><br>
+          <div class="form-group">
+              <span class="ui-float-label">
+                  <input id="message" type="text" class="form-control" name="message" [ngModel]="requestedCoupon.message" disabled="true" pInputText>
+                  <label for="message">Message</label>
+              </span>
+          </div><br>
+          <div class="form-group">
+              <span class="ui-float-label">
+                  <input id="price" type="number" class="form-control" name="price" [ngModel]="requestedCoupon.price" disabled="true" pInputText>
+                  <label for="price">Price</label>
+              </span>
+          </div><br>
+          <br>
+      <span ><button [disabled]="!requestedCoupon.id" pButton type="submit" class="ui-button-rounded" label="Show"
+        (click)="getCoupon(requestedCoupon.id)"></button></span>
+    </form>
+    </p-fieldset>
+  </div>

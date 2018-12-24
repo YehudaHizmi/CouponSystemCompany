@@ -1,0 +1,11 @@
+.startyear,
+.endyear {
+	float: left;
+	width: 10vw;
+	color: #333;
+	text-align: right;
+	font-weight: bold;
+}
+.endyear {
+	text-align: left;
+}

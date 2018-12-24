@@ -1,0 +1,31 @@
+<div class="container">
+    <p-fieldset [legend]="caption">
+    <form>
+       <div class="form-group">
+            <span class="ui-float-label">
+                <input id=""  type="number" class="form-control" name="id" [(ngModel)]="requestedCompany.id" pInputText>
+                <label for="id">Company Id</label>
+            </span>
+        </div><br>
+        <div class="form-group">
+            <span class="ui-float-label">
+                <input id="compName" type="text" class="form-control" name="compName" [(ngModel)]="requestedCompany.compName" disabled="true"  pInputText>
+                <label for="compName">Name</label>
+            </span>
+        </div><br>
+        <div class="form-group">
+            <span class="ui-float-label">
+                <input id="password"  type="text" class="form-control" name="password" [(ngModel)]="requestedCompany.password" disabled="true" pInputText>
+                <label for="password">Password</label>
+            </span>
+        </div><br>
+        <div class="form-group">
+          <span class="ui-float-label">
+              <input id="email" type="email" class="form-control" name="email" [(ngModel)]="requestedCompany.email" disabled="true" pInputText>
+              <label for="email">Email</label>
+          </span>
+        </div>
+      <!-- <span ><button pButton type="submit" class="ui-button-rounded" label="Show" (click)="getCompanyInfo()"></button></span> -->
+    </form>
+    </p-fieldset>
+  </div>

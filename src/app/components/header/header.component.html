@@ -1,0 +1,20 @@
+<nav class="navbar navbar-inverse" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <div class="navbar-brand">CouponSystem</div>
+    </div>
+      <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-left">
+              <li>
+                  <p-menu [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'0ms'" #menu [popup]="true" [model]="items"></p-menu>
+                  <a class="glyphicon glyphicon-list"  label="Show" (click)="menu.toggle($event)"></a>
+              </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+              <li><a><span class="glyphicon glyphicon-user"></span> Hello {{ company.compName }}</a></li>
+              <li><a (click)="logout()"><span class="glyphicon glyphicon-off"></span> Log Out</a></li>
+          </ul>
+      </div>
+  </div>
+</nav>
+
